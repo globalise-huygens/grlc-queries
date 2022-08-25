@@ -1,0 +1,25 @@
+#+ summary: Example query to fetch a ship based on a string argument
+#+ endpoint: https://globalise-data.diginfra.net/repositories/GLOBALISE-DATA
+#+ method: GET
+#+ tags:
+#+   - ships
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT DISTINCT ?uri ?label WHERE {
+    
+    ?ship a sem:Object ;
+         sem:actorType <https://data.globalise.huygens.knaw.nl/id/vocabulary/actortype/ship> ;
+         rdfs:label ?label .
+    
+    # No reasoning until we have modelled the preferredURI
+    ?uri owl:sameAs|^owl:sameAs ?ship .  # must be present in our linkset
+    
+    # Very basic searching
+    FILTER(REGEX(?label, ?_search, 'i'))
+    
+}
+            
