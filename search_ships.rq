@@ -1,5 +1,5 @@
 #+ summary: Example query to fetch a ship based on a string argument
-#+ endpoint: https://globalise-data.diginfra.net/repositories/GLOBALISE-DATA
+#+ endpoint: https://globalise-data.diginfra.net/repositories/GLOBALISE-DATA?infer=false
 #+ method: GET
 #+ tags:
 #+   - ships
