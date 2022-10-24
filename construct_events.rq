@@ -1,0 +1,73 @@
+#+ summary: Example query to construct a new simplified graph with ship event information
+#+ endpoint: https://globalise-data.diginfra.net/repositories/GLOBALISE-DATA
+#+ method: GET
+#+ tags:
+#+   - ships
+#+   - events
+
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+    ?ship a sem:Object ;
+          rdfs:label ?label .
+    
+    ?event a sem:Event ;
+           sem:hasActor ?ship ;
+           sem:hasPlace ?place ;
+           sem:hasBeginTimeStamp ?beginDate ;
+           sem:hasEndTimeStamp ?endDate .
+    
+    ?mustering a sem:Event ;
+               sem:hasActor ?ship ;
+               sem:hasPlace ?musteringPlace ;
+               sem:hasTimeStamp ?musteringDate .
+    
+    ?musteringPlace a sem:Place ;
+                    rdfs:label ?musteringPlaceLabel .
+    
+    ?place a sem:Place ;
+           rdfs:label ?placeLabel .
+    
+} WHERE {
+    ?ship a sem:Object ;
+          sem:actorType <https://data.globalise.huygens.knaw.nl/id/vocabulary/actortype/ship> ;
+          rdfs:label ?label .
+    
+    ?event a sem:Event ;
+           sem:hasActor ?actor_in_role ;
+           sem:hasSubEvent ?departure, ?arrival .
+    
+    OPTIONAL {       
+        ?mustering a sem:Event ;
+                   sem:eventType <https://data.globalise.huygens.knaw.nl/id/vocabulary/eventtype/mustering> ;
+                   sem:hasTimeStamp ?musteringDate ;
+                   sem:hasPlace ?musteringPlace ;
+                   sem:hasActor/rdf:value ?ship .
+        
+        ?musteringPlace a sem:Place ;
+                        rdfs:label ?musteringPlaceLabel .
+    }
+    
+    ?departure sem:eventType <https://data.globalise.huygens.knaw.nl/id/vocabulary/eventtype/Departure> ;
+               sem:hasTimeStamp ?beginDate .
+    
+    ?arrival sem:eventType <https://data.globalise.huygens.knaw.nl/id/vocabulary/eventtype/arrival> ;
+             sem:hasTimeStamp ?endDate .
+    
+
+    ?place a sem:Place ;
+           rdfs:label ?placeLabel .
+        
+    ?event sem:hasSubEvent/sem:hasPlace ?place .
+    
+    ?actor_in_role a sem:Role ;
+                   rdf:value ?ship .
+    
+#    FILTER(?ship = <https://data.globalise.huygens.knaw.nl/id/gzm/ship/10>)
+    
+
+}
