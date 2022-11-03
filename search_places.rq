@@ -1,3 +1,4 @@
+#+ summary: Example query to places (geonames) based on a string argument
 #+ endpoint: https://globalise-data.diginfra.net/repositories/GLOBALISE-DATA?infer=false
 #+ method: GET
 #+ tags:
