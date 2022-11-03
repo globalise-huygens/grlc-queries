@@ -17,4 +17,7 @@ SELECT DISTINCT ?uri ?label WHERE {
     # Only geonames for now, have to find something for the preffered URI. 
     FILTER(CONTAINS(STR(?uri), 'geonames'))
     
+    # Very basic searching
+    FILTER(REGEX(?label, ?_search, 'i'))
+    
 }
