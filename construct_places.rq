@@ -1,0 +1,27 @@
+#+ summary: Example query to construct a new simplified graph with place information
+#+ endpoint: https://globalise-data.diginfra.net/repositories/GLOBALISE-DATA?infer=false
+#+ method: GET
+#+ tags:
+#+   - places
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+CONSTRUCT {
+    ?place a sem:Place ;
+          rdfs:label ?place_label ;
+          owl:sameAs ?uri .
+} WHERE {
+    
+    ?place a sem:Place ;
+           owl:sameAs ?uri ;
+           rdfs:label ?label .
+    
+    # Only geonames for now, have to find something for the preffered URI. 
+    FILTER(CONTAINS(STR(?uri), 'geonames'))
+
+    BIND(CONCAT(?label, ' (place)') AS ?place_label)
+    
+}
