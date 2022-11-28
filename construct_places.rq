@@ -20,7 +20,7 @@ CONSTRUCT {
            rdfs:label ?label .
     
     # Only geonames for now, have to find something for the preffered URI. 
-    FILTER(CONTAINS(STR(?uri), 'geonames'))
+    FILTER(CONTAINS(STR(?uri), 'geonames') || CONTAINS(STR(?uri), 'amh_'))
 
     BIND(CONCAT(?label, ' (place)') AS ?place_label)
     
