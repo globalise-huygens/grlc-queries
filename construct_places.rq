@@ -16,11 +16,12 @@ CONSTRUCT {
 } WHERE {
     
     ?place a sem:Place ;
-           owl:sameAs ?uri ;
            rdfs:label ?label .
     
+    OPTIONAL { ?place owl:sameAs ?uri . }
+    
     # Only geonames for now, have to find something for the preffered URI. 
-    FILTER(CONTAINS(STR(?uri), 'geonames') || CONTAINS(STR(?uri), 'amh_'))
+    FILTER(CONTAINS(STR(?uri), 'geonames') || CONTAINS(STR(?uri), 'amh_') || CONTAINS(STR(?place), 'amh_'))
 
     BIND(CONCAT(?label, ' (place)') AS ?place_label)
     
